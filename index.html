@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+   #AllContainer {
+  max-width: 600px;
+  margin: auto;
+       background-color: beige;
+}
+    #yearMark {
+     color:blue;
+     font-size: 1.3em;
+    }
+    #finalMark {
+     color:red;
+     font-size: 1.3em;
+    }
+    #requiredMark{
+      color:lightred;
+     font-size: 1.3em;  
+    
+    }
+    #content{
+        background-color: #F4C430;
+        padding:2px;
+        margin:2px;
+    }
+    #distinictionMark{
+     color:darkred;
+     font-size: 1.3em;  
+    }
+    #decision{
+     color:red;
+     font-size: 1.3em;  
+    }
+    input{
+         padding: 3px
+    }
+    div{
+        width:98%;
+    }
+    .emphasis{
+        color:red;
+        font-weight: bolder;
+    }
+    .button {
+  background-color: #ED9121;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+ input[type=text] {
+  width: 70%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+    </style>
+<body>
+<div id="AllContainer">
+<h1 style='background-color:#FF8200; color: black'>ICT1512 Year and Exam Mark Calculator</h1>
+<div style="border:1 black thin; font-size: 1.2em">
+<p>The following formula is used to calculate   year mark:<br/>
+[Assignment 1 * 0.16] + [Assignment 2 * 0.17] + [Assignment 3 * 0.17] + [Assignment 4 * 0.5] = Year  <br/>
+
+</p>
+</div>
+<div id="content">
+<form>
+<p> All marks (input) is supposed to be percentages you got in assignments.<br/> Enter Marks</p>
+<label for="assign1"> Assignment 1 (16%):
+    <input type="number" name="assign1" id="assign1" size="30" min="0" max="100"  value="0" onchange="compute()"/>
+</label>
+<br/>
+<label for="assign2"> Assignment 2 (17%):
+    <input type="number" name="assign2" id="assign2" size="30" min="0" max="100"  value="0" onchange="compute()"/> 
+</label>
+<br/>
+<label for="assign3"> Assignment 3 (17%):
+    <input type="number" name="assign3" id="assign3" size="30" min="0" max="100" value="0" onchange="compute()"/>
+</label>
+<br/>
+<label for="assign4"> Assignment 4 (50%):
+    <input type="number" name="assign4" id="assign4" size="30" min="0" max="100" value="0" onchange="compute()"/>
+</label>
+<br/>
+<p id="yearMark"></p>
+<p id="requiredMark"></p>
+<p id="distinictionMark"></p>
+<label for="examMark"> Examination Mark (70%):
+    <input type="number" name="examMark" id="examMark" size="30" min="0" max="100" value="0" onchange="compute()"/>
+</label>
+<br/>
+<p id="finalMark"></p>
+<p id="decision"></p>
+<input type="button" value="Calculate" id="computer" onclick="compute()" class="button"/>
+</form>
+</div>
+<div id="final" style="background-color: beige;">
+ <h4>Calculating your final mark</h4>
+ <p>[Year mark * 0.3] + [Exam mark * 0.7] = Final mark</p>
+<ul>
+    <li>The final mark must be 50% or higher in order for you to be declared competent.</li>
+ <li>Your written <em class="emphasis">exam paper mark must be above 40% </em>before your year mark is taken
+into consideration.</li>
+ <li>If your written exam paper mark is <em class="emphasis"> below 40% you automatically fail </em>the module,even if your final mark is above 50%.</li>
+ <li>To qualify for a supplementary examination, you need to obtain at least 40% for the
+examination paper and your final mark must be below 50%</li>
+</div>
+        </div>
+<script>
+    
+    document.addEventListener("load",createEvents,false);
+
+var assign1=document.getElementById("assign1");
+var assign2=document.getElementById("assign2");
+var assign3=document.getElementById("assign3");
+var assign4=document.getElementById("assign4");
+var examMark=document.getElementById("examMark");
+var yearkMark=document.getElementById("yearMark");
+
+
+var yMark=0;
+var s1W=0.16;
+var s2W=0.17;
+var s3W=0.17;
+var s4W=0.5;
+var examW=0.7;
+var yW=0.3;
+
+function compute(){
+    var s1=assign1.value==""?0:parseInt(assign1.value);
+    var s2=assign2.value==""?0:parseInt(assign2.value);
+    var s3=assign3.value==""?0:parseInt(assign3.value);;
+    var s4=assign4.value==""?0:parseInt(assign4.value);
+
+    var sum=0;
+
+    var exam=examMark.value==""?0:parseInt(examMark.value);
+
+    sum=s1*s1W+s2*s2W+s3*s3W+s4*s4W; //computer year mark
+
+     var requiredExamToPass=checkPass(sum * yW);
+
+    yearkMark.innerHTML="Your Year Mark : <em class='emphasis'>"+ sum.toFixed(0) +"%</em>"; //display final mark
+    
+
+    var finalMark=exam*examW + sum * yW; //computer final mark
+     //your final mark
+    //var finalRequiredToPass=finalPercentage(requiredExamToPass,sum*yW);
+     //to pass you need to obtain 50% in the exam.
+    document.getElementById("requiredMark").innerHTML= "Based on Year Mark to pass you need to obtain : <em class='emphasis'>"+requiredExamToPass.toFixed(0)+"%</em> in the final exam.";
+    
+    //check for distinction
+    var distcheck=distinctionCheck(sum * yW);
+     
+     if(distcheck>100){
+         document.getElementById("distinictionMark").innerHTML= "Sorry you can't get a distinction based on your year mark of <em class='emphasis'>"+sum.toFixed(0) +"%</em>";
+     }
+    else{
+    //to pass you need a distinction you need x% in the exam.
+    document.getElementById("distinictionMark").innerHTML= "To obtain a distinction aim for <em class='emphasis'>"+distinctionCheck(sum * yW).toFixed(0)+"% </em>in the final exam.";
+    }
+
+    //after final mark after actual exam mark is entered
+     document.getElementById("finalMark").innerHTML= "["+sum.toFixed(0)+" * 0.3] + ["+exam.toFixed(0)+" * 0.7] = Final Mark is "+finalMark.toFixed(0)+"%";
+     //after final mark after actual exam mark is entered
+     document.getElementById("decision").innerHTML= checkDesision(finalMark,exam);
+
+}
+function checkPass(yearMark){
+
+  var i=(50 - yearMark)
+
+  var percentage=(i/70) *100;
+
+    if(percentage<=40){
+        return 40;
+    }
+  return percentage;
+}
+function distinctionCheck(yearMark){
+  var i=75 - yearMark;
+ var percentage=(i/70) *100;
+    if(percentage>=45){
+        return percentage;
+    }
+    else
+        return 0;
+}
+function checkDesision(finalMark, examMark){
+    var msg="";
+
+    if(examMark<40){
+        msg="Sorry you have failed the module because your exam mark is less than 40%. No supplementary";
+    }
+    else if(finalMark<40 && examMark>=40){
+        msg="Sorry you have failed the module because your final mark is less than 50%. No supplementary";
+    }
+    else if(finalMark>=75){
+      msg="Yes!!! You got a distinction!! "+finalMark.toFixed(0)+"%";     
+    }
+    else if(finalMark>=50 && examMark>40){ //pass only if the final mark is greater than 50 and exam mark is at least 40
+      msg="Congratulations!!... It's a pass "+finalMark.toFixed(0)+"%";  
+    }
+    else if(finalMark<40 && examMark>40){
+
+    }
+    else if((finalMark<50 && finalMark>=40) && examMark>=40){
+     msg="OH!! You got a SUPPLEMETARY "+finalMark.toFixed(0)+"%";  
+    }
+    else
+        msg="";
+return msg;
+
+}
+function createEvents(){
+    assign1.addEventListener("change",compute,false);
+    assign2.addEventListener("change",compute,false);
+    assign3.addEventListener("change",compute,false);
+    assign4.addEventListener("change",compute,false);
+    examMark.addEventListener("change",compute,false);
+}
+</script>
+</body>
+</html>
