@@ -1,0 +1,59 @@
+#AllContainer {
+    max-width: 600px;
+    margin: auto;
+         background-color: beige;
+  }
+      #yearMark {
+       color:blue;
+       font-size: 1.3em;
+      }
+      #finalMark {
+       color:red;
+       font-size: 1.3em;
+      }
+      #requiredMark{
+        color:lightred;
+       font-size: 1.3em;  
+      
+      }
+      #content{
+          background-color: #F4C430;
+          padding:2px;
+          margin:2px;
+      }
+      #distinictionMark{
+       color:darkred;
+       font-size: 1.3em;  
+      }
+      #decision{
+       color:red;
+       font-size: 1.3em;  
+      }
+      input{
+           padding: 3px
+      }
+      div{
+          width:98%;
+      }
+      .emphasis{
+          color:red;
+          font-weight: bolder;
+      }
+      .button {
+    background-color: #ED9121;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+   input[type=text] {
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
